@@ -1,6 +1,8 @@
-div align="center">
+<div align="center">
   <br />
+    <a href="https://www.youtube.com/watch?v=LKrX390fJMw" target="_blank">
       <img src="assets/readme/hero.png" alt="Project Banner">
+    </a>
   <br />
 
   <div>
@@ -12,7 +14,6 @@ div align="center">
   </div>
 
   <h3 align="center">Food Delivery Mobile App</h3>
-
 </div>
 
 ## 📋 <a name="table">Table of Contents</a>
