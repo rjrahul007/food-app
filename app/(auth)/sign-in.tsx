@@ -1,6 +1,7 @@
 import CustomButton from "@/components/CustomButton";
 import CustomInput from "@/components/CustomInput";
 import { singIn } from "@/lib/appwrite";
+import * as Sentry from '@sentry/react-native';
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Alert, Text, View } from "react-native";
@@ -25,6 +26,7 @@ const SingIn = () => {
       router.replace('/');
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Something went wrong');
+      Sentry.captureEvent(error);
     }finally{
       setIsSubmitting(false);
     }
