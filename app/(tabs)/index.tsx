@@ -1,18 +1,18 @@
 import CartButton from "@/components/CartButton";
 import { images, offers } from "@/constants";
-import * as Sentry from '@sentry/react-native';
 import cn from "clsx";
 import { Fragment } from "react";
-import { Button, FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../globals.css"; // import global styless
  
 // never wrap flatlist or virtuallistized list inside a scrollview
 
 export default function Index() {
+  // const {user} = useAuthStore();
+  // console.log("User:", JSON.stringify(user, null, 2))
   return (
 <SafeAreaView className="flex-1 bg-white">
-
   <FlatList 
   data={offers} 
   renderItem={({item, index})=> {
@@ -47,9 +47,9 @@ export default function Index() {
     </View>
    <CartButton/>
   </View>)}
-  ListFooterComponent={()=>(
-    <Button title='Try!' onPress={ () => { Sentry.captureException(new Error('First error')) }}/>
-  )}
+  // ListFooterComponent={()=>(
+  //   <Button title='Try!' onPress={ () => { Sentry.captureException(new Error('First error')) }}/>
+  // )}
   />
 </SafeAreaView>
   );
