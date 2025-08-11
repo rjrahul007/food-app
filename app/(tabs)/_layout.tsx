@@ -9,7 +9,14 @@ import { Image, Text, View } from "react-native";
 
 const TabBarIcon = ({focused, icon, title}: TabBarIconProps)=>(
   <View className="tab-icon">
-    <Image source={icon} className='size-7' resizeMode='contain' tintColor={focused? '#fe8c00': "#5d5f6d"}/>
+       <View className={cn('p-1', focused ? 'border-t-2 border-primary' : '')}>
+      <Image
+        source={icon}
+        className="size-7"
+        resizeMode="contain"
+        tintColor={focused ? '#fe8c00' : '#5d5f6d'}
+      />
+    </View>
     <Text className={cn('text-sm font-bold', focused? 'text-primary': 'text-gray-200')}>
       {title}
     </Text>
