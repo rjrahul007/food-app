@@ -7,10 +7,21 @@ import { Image, TextInput, TouchableOpacity, View } from "react-native";
 const SearchBar = () => {
     const params = useLocalSearchParams<{query?: string}>();
     const [query, setQuery] = useState(params.query || '');
+
+    // const debounceSearch = useDebouncedCallback((text: string) => {
+    //     // router.setParams({ query: text });
+    //     router.push(`/search`)
+    // }, 500);
+
     const handleChange = (text: string) => {
         setQuery(text);
-        router.setParams({ query: text });
+        if(!text.trim()) router.setParams({ query: undefined });
     }
+
+    const handleSubmit = () => {
+        if(query.trim()) router.setParams({query});
+    }
+
 
   return (
     <View className="searchbar">
@@ -19,11 +30,13 @@ const SearchBar = () => {
       placeholder="Search for pizza, burger..."
       value={query}
       onChangeText={handleChange}
+      onSubmitEditing={handleSubmit}
       placeholderTextColor={"#B0B0B0"}
+      returnKeyType="search"
       />
         <TouchableOpacity
         className="p-5"
-        onPress={() => {}}
+        onPress={() => {router.setParams({query})}}
         >
         <Image source={images.search} className="size-6" 
         resizeMode="contain"
