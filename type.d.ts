@@ -105,3 +105,23 @@ interface GetMenuParams {
     category: string;
     query: string;
 }
+
+export interface UpdateUserParams {
+  name?: string;
+  email?: string;
+  phone?: string;
+  home_address?: string;
+  office_address?: string;
+  avatar?: string;
+}
+
+export interface UserProfile {
+  $id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  home_address?: string;
+  office_address?: string;
+  avatar?: string;
+  accountid: string;
+}

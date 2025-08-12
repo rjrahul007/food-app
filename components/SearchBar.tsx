@@ -1,6 +1,6 @@
 import { images } from "@/constants";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, TextInput, TouchableOpacity, View } from "react-native";
 
 
@@ -8,10 +8,9 @@ const SearchBar = () => {
     const params = useLocalSearchParams<{query?: string}>();
     const [query, setQuery] = useState(params.query || '');
 
-    // const debounceSearch = useDebouncedCallback((text: string) => {
-    //     // router.setParams({ query: text });
-    //     router.push(`/search`)
-    // }, 500);
+    useEffect(() => {
+      setQuery(params.query || "");
+  }, [params.query]);
 
     const handleChange = (text: string) => {
         setQuery(text);
@@ -19,7 +18,7 @@ const SearchBar = () => {
     }
 
     const handleSubmit = () => {
-        if(query.trim()) router.setParams({query});
+         router.setParams({ query: query.trim() || undefined });
     }
 
 

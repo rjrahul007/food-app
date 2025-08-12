@@ -1,6 +1,7 @@
 import CartButton from "@/components/CartButton";
 import { images, offers } from "@/constants";
 import cn from "clsx";
+import { router } from "expo-router";
 import { Fragment } from "react";
 import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,8 +10,13 @@ import "../globals.css"; // import global styless
 // never wrap flatlist or virtuallistized list inside a scrollview
 
 export default function Index() {
-  // const {user} = useAuthStore();
-  // console.log("User:", JSON.stringify(user, null, 2))
+ const handlePress = (name: string) => {
+    router.push({
+    pathname: "/search",
+    params: {category: name }
+  });
+  };
+
   return (
 <SafeAreaView className="flex-1 bg-white">
   <FlatList 
@@ -19,7 +25,9 @@ export default function Index() {
     const isEven = index % 2 === 0;
     return(
     <View>
-      <Pressable className={cn('offer-card', isEven? 'flex-row-reverse': 'flex-row')} style={{backgroundColor: item.color}} android_ripple={{color: '#ffff22'}}>
+      <Pressable className={cn('offer-card', isEven? 'flex-row-reverse': 'flex-row')} style={{backgroundColor: item.color}} android_ripple={{color: '#ffff22'}}
+      onPress={()=> handlePress(item.name)}
+      >
       {({pressed}) => (
         <Fragment>
           <View className="h-full w-1/2 ">

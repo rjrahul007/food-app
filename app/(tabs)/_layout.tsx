@@ -62,7 +62,9 @@ const TabLayout = () => {
     name='search'
     options={{
       title: 'Search',
-      tabBarIcon: ({focused})=> <TabBarIcon title='Search' focused={focused} icon={images.search}/>
+      tabBarIcon: ({focused})=> <TabBarIcon title='Search' focused={focused} icon={images.search}
+      />
+      
     }}
     />
     <Tabs.Screen

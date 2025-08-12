@@ -22,7 +22,7 @@ const Search = () => {
    refetch({category: category ?? '', query: query ?? '', limit: 6});
 
   }, [category, query]);
-  
+
 
   return (
     <SafeAreaView>
