@@ -71,7 +71,8 @@ const TabLayout = () => {
     name='cart'
     options={{
       title: 'Cart',
-      tabBarIcon: ({focused})=> <TabBarIcon title='Cart' focused={focused} icon={images.bag}/>
+      tabBarIcon: ({focused})=> <TabBarIcon title='Cart' focused={focused} icon={images.bag}
+      />
     }}
     />
     <Tabs.Screen

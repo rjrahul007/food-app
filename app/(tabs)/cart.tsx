@@ -4,7 +4,7 @@ import CustomHeader from "@/components/CustomHeader";
 import { useCartStore } from "@/store/cart.store";
 import { PaymentInfoStripeProps } from '@/type';
 import cn from "clsx";
-import { FlatList, Platform, Text, View } from 'react-native';
+import { FlatList, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: PaymentInfoStripeProps) => (
@@ -31,7 +31,21 @@ const Cart = () => {
                 renderItem={({ item }) => <CartItem item={item} />}
                 keyExtractor={(item) => item.id}
                 contentContainerClassName="pb-28 px-5 pt-5"
-                ListHeaderComponent={() => <CustomHeader title="Your Cart" />}
+                ListHeaderComponent={() =>
+                <View className="py-5 gap-y-5">
+                    <CustomHeader title="Your Cart" />
+                <View className="flex flex-row justify-between">
+                    <View className="flex-start">
+                    <Text className="small-bold text-primary">DELIVER TO</Text>
+                    <View className="flex-row flex-center gap-x-1 mt-0.5">
+                    <Text className="paragraph-bold text-dark-100">India</Text>
+                    </View>
+                    </View>
+                <TouchableOpacity onPress={() => {}} className="border border-primary rounded-full px-3 py-2">
+                    <Text className="font-bold text-primary">Change Location</Text>
+                </TouchableOpacity>
+                </View>
+                </View>}
                 ListEmptyComponent={() => 
                     <View className="flex-1 items-center justify-center">
                     <View className="bg-white rounded-2xl p-6 shadow-md items-center" style={Platform.OS === 'android' ? {elevation: 5, shadowColor: '#878787'} : {}}>

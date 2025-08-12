@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/react-native';
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
+import { StatusBar } from "react-native";
 import "./globals.css";
 
 Sentry.init({
@@ -45,5 +46,9 @@ export default Sentry.wrap(function RootLayout() {
   if(!fontsLoaded || isLoading) return null;
   
 
-  return <Stack screenOptions={{headerShown: false}}/>;
+  return(  
+  <>
+  <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/> 
+  <Stack screenOptions={{headerShown: false}}/>
+  </>);
 });

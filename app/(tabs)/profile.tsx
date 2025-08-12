@@ -159,20 +159,20 @@ const Profile = () => {
             {/* Action Buttons */}
             <View className="space-y-4 my-8">
               <TouchableOpacity
-                className="bg-orange-50 border border-orange-200 rounded-full py-4 px-6"
+                className="bg-orange-50 border border-orange-200 rounded-full py-2 px-6"
                 onPress={handleEditProfile}
               >
-                <Text className="text-primary font-semibold text-center text-lg">
+                <Text className="text-primary font-semibold text-center text-md">
                   Edit Profile
                 </Text>
               </TouchableOpacity>
                                    
               <TouchableOpacity
-                className="bg-red-50 border border-red-200 rounded-full py-4 px-6 mt-6 flex-row items-center justify-center"
+                className="bg-red-50 border border-red-200 rounded-full py-2 px-6 mt-4 flex-row items-center justify-center"
                 onPress={handleLogout}
               >
-                <SimpleLineIcons name="logout" size={24} color="#dc2626" />
-                <Text className="text-red-600 font-semibold text-lg ml-2">
+                <SimpleLineIcons name="logout" size={18} color="#dc2626" />
+                <Text className="text-red-600 font-semibold text-md ml-2">
                   Logout
                 </Text>
               </TouchableOpacity>
