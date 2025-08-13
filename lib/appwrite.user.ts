@@ -1,26 +1,24 @@
-import { UpdateUserParams } from "@/type";
 import { ID, Query } from "react-native-appwrite";
-import { account, appwriteConfig, databases } from "./appwrite";
+import { account, appwriteConfig, avatars, databases } from "./appwrite";
+import { clearSession, getSavedSession, saveSession } from "./storage";
 
-export const createUser = async ({ email, password, name }: { email: string, password: string, name: string }) => {
+
+// Create User (Signup)
+export const createUser = async ({ email, password, name }: { email: string; password: string; name: string }) => {
   try {
+    await account.deleteSession("current").catch((err) => {console.warn("No existing session to delete", err);});
+
     const newAccount = await account.create(ID.unique(), email, password, name);
     if (!newAccount) throw new Error("Account creation failed");
-
-    // Create user document in DB
+    const avatarUrl = avatars.getInitialsURL(name);
     await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
-      {
-        accountid: newAccount.$id,
-        email,
-        name
-      }
+      { accountid: newAccount.$id, email, name, avatar: avatarUrl }
     );
 
-    // Auto-login after creation
-    await account.createEmailPasswordSession(email, password);
+    await signIn({email, password});
 
     return newAccount;
   } catch (error) {
@@ -29,44 +27,68 @@ export const createUser = async ({ email, password, name }: { email: string, pas
   }
 };
 
-export const signIn = async ({ email, password }: { email: string, password: string }) => {
+// Sign In
+export const signIn = async ({ email, password }: { email: string; password: string }) => {
   try {
-    return await account.createEmailPasswordSession(email, password);
-  } catch (error) {
-    console.error("signIn error", error);
-    throw error;
+    const session = await account.createEmailPasswordSession(email, password);
+    await saveSession(session);
+    return session;
+  } catch (e) {
+    throw new Error(String(e));
   }
 };
 
+// Restore Session (on app start)
+export const restoreSession = async () => {
+  const session = await getSavedSession();
+  if (!session) return null;
+
+  try {
+    // Just calling account.get() will throw if session expired
+    const user = await account.get();
+    return user;
+  } catch {
+    await clearSession();
+    return null;
+  }
+};
+
+// Get Current User (only if logged in)
+export const getCurrentUser = async () => {
+  try {
+    const currentAccount = await account.get();
+    if (!currentAccount) throw new Error("No account found");
+
+    const currentUser = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.equal("accountid", currentAccount.$id)] // match field name exactly
+    );
+
+    // console.log("Current User:", currentUser);
+
+    if (!currentUser) throw new Error("No user document found");
+
+    return currentUser.documents[0];
+  } catch (e) {
+    console.error("getCurrentUser error", e);
+    throw e;
+  }
+};
+
+// Sign Out
 export const signOut = async () => {
   try {
-    return await account.deleteSession("current");
+    await account.deleteSession("current");
+    await clearSession();
   } catch (error) {
     console.error("signOut error", error);
     throw error;
   }
 };
 
-export const getCurrentUser = async () => {
-  try {
-    const currentAccount = await account.get();
-    if (!currentAccount) return null;
-
-    const currentUser = await databases.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
-      [Query.equal("accountid", currentAccount.$id)]
-    );
-
-    return currentUser.documents[0] ?? null;
-  } catch (error) {
-    console.error("getCurrentUser error", error);
-    return null;
-  }
-};
-
-
-export const updateUserProfile = async (userId: string, userData: UpdateUserParams) => {
+// Update User Profile
+export const updateUserProfile = async (userId: string, userData: any) => {
   try {
     const updatedUser = await databases.updateDocument(
       appwriteConfig.databaseId,
@@ -76,6 +98,7 @@ export const updateUserProfile = async (userId: string, userData: UpdateUserPara
     );
     return updatedUser;
   } catch (error) {
+    console.error("updateUserProfile error", error);
     throw new Error(`Failed to update user profile: ${error}`);
   }
-};
+}

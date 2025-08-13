@@ -25,7 +25,7 @@ Sentry.init({
 
 
 export default Sentry.wrap(function RootLayout() {
-  const {isLoading, fetchAuthenticatedUser} = useAuthStore();
+  const {isLoading, init} = useAuthStore();
   const [fontsLoaded, error] = useFonts({
     "quicksand-bold": require("../assets/fonts/Quicksand-Bold.ttf"),
     "quicksand-semi-bold": require("../assets/fonts/Quicksand-SemiBold.ttf"),
@@ -40,7 +40,7 @@ export default Sentry.wrap(function RootLayout() {
   }, [fontsLoaded, error]);
   
   useEffect(() => {
-    fetchAuthenticatedUser()
+    init()
   }, []);
 
   if(!fontsLoaded || isLoading) return null;

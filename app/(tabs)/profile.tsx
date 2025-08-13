@@ -159,7 +159,7 @@ const Profile = () => {
             {/* Action Buttons */}
             <View className="space-y-4 my-8">
               <TouchableOpacity
-                className="bg-orange-50 border border-orange-200 rounded-full py-2 px-6"
+                className="bg-orange-50 border border-orange-200 rounded-full py-3 px-6"
                 onPress={handleEditProfile}
               >
                 <Text className="text-primary font-semibold text-center text-md">
@@ -168,7 +168,7 @@ const Profile = () => {
               </TouchableOpacity>
                                    
               <TouchableOpacity
-                className="bg-red-50 border border-red-200 rounded-full py-2 px-6 mt-4 flex-row items-center justify-center"
+                className="bg-red-50 border border-red-200 rounded-full py-3 px-6 mt-4 flex-row items-center justify-center"
                 onPress={handleLogout}
               >
                 <SimpleLineIcons name="logout" size={18} color="#dc2626" />

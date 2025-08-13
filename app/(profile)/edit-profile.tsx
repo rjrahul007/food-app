@@ -24,7 +24,8 @@ const InputField = ({
   multiline = false,
   keyboardType = "default",
   required = false,
-  icon
+  icon,
+  maxlength
 }: {
   label: string;
   value: string;
@@ -34,6 +35,7 @@ const InputField = ({
   keyboardType?: "default" | "email-address" | "phone-pad";
   required?: boolean;
   icon?: string;
+  maxlength?: number;
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -211,7 +213,6 @@ const EditProfile = () => {
         home_address: formData.homeAddress.trim(),
         office_address: formData.workAddress.trim()
       });
-
       Alert.alert(
         "Success! 🎉",
         "Your profile has been updated successfully.",
@@ -324,11 +325,12 @@ const EditProfile = () => {
             />
             
             <InputField
-              label="Phone Number"
+              label="Mobile Number"
               value={formData.phone}
               onChangeText={(text) => setFormData({...formData, phone: text})}
-              placeholder="+1 (555) 123-4567"
+              placeholder="987-4563-214"
               keyboardType="phone-pad"
+              maxlength={10}
               icon="call-outline"
             />
           </View>

@@ -1,18 +1,15 @@
-import { createUser, getCurrentUser, signIn, signOut } from "@/lib/appwrite.user";
+import { createUser, getCurrentUser, restoreSession, signIn, signOut } from "@/lib/appwrite.user";
 import { User } from "@/type";
 import { create } from "zustand";
 
 type AuthState = {
-  isAuthenticated: boolean;
   user: User | null;
+  isAuthenticated: boolean;
   isLoading: boolean;
-  setIsAuthenticated: (value: boolean) => void;
-  setUser: (user: User | null) => void;
-  setLoading: (loading: boolean) => void;
-  fetchAuthenticatedUser: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, username: string) => Promise<void>;
   logout: () => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>;
+  init: () => Promise<void>;
 };
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -20,41 +17,33 @@ const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isLoading: true,
 
-  setIsAuthenticated: (value) => set({ isAuthenticated: value }),
-  setUser: (user) => set({ user }),
-  setLoading: (value) => set({ isLoading: value }),
-
-  fetchAuthenticatedUser: async () => {
-    set({ isLoading: true });
-    try {
-      const user = await getCurrentUser();
-      if (user) {
-        set({ isAuthenticated: true, user: user as unknown as User });
-      } else {
-        set({ isAuthenticated: false, user: null });
-      }
-    } catch (error) {
-      console.error("fetchAuthenticatedUser error", error);
-      set({ isAuthenticated: false, user: null });
-    } finally {
-      set({ isLoading: false });
+   init: async () => {
+    const restored = await restoreSession();
+    if (restored) {
+      const userDoc = await getCurrentUser();
+      set({ user: userDoc as unknown as User, isAuthenticated: true, isLoading: false });
+    } else {
+      set({ isAuthenticated: false, isLoading: false });
     }
   },
 
-  login: async (email, password) => {
-    await signIn({ email, password });
-    await useAuthStore.getState().fetchAuthenticatedUser();
-  },
-
-  register: async (email, password, name) => {
-    await createUser({ email, password, name });
-    await useAuthStore.getState().fetchAuthenticatedUser();
+    login: async (email, password) => {
+    const session = await signIn({ email, password });
+    if (session) {
+      const userDoc = await getCurrentUser();
+      set({ user: userDoc as unknown as User, isAuthenticated: true, isLoading: false });
+    }
   },
 
   logout: async () => {
     await signOut();
-    set({ isAuthenticated: false, user: null });
-  }
+    set({ user: null, isAuthenticated: false });
+  },
+
+  register: async (email, password, name) => {
+    const userDoc = await createUser({ email, password, name });
+    set({ user: userDoc as unknown as User, isAuthenticated: true, isLoading: false  });
+  },
 }));
 
 export default useAuthStore;
