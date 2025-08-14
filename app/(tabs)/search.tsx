@@ -1,4 +1,5 @@
 import CartButton from "@/components/CartButton";
+import Empty from "@/components/Empty";
 import Filter from "@/components/Filter";
 import MenuCard from "@/components/MenuCard";
 import SearchBar from "@/components/SearchBar";
@@ -8,13 +9,13 @@ import { Category, MenuItem } from "@/type";
 import cn from 'clsx';
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
-import { FlatList, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Search = () => {
   const {category, query} = useLocalSearchParams<{query?:string, category?:string}>();
 
-   const { data, refetch, loading } = useAppwrite({ fn: getMenu, params: { category: category ?? '', query: query ?? '', limit: 6, } });
+   const { data, refetch, loading, setLoading } = useAppwrite({ fn: getMenu, params: { category: category ?? '', query: query ?? '', limit: 6, } });
   
   const {data: categories} = useAppwrite({fn: getCategories});
   
@@ -23,6 +24,13 @@ const Search = () => {
 
   }, [category, query]);
 
+   const onRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+       refetch();
+      setLoading(false);
+    }, 250);
+  };
 
   return (
     <SafeAreaView>
@@ -55,9 +63,15 @@ const Search = () => {
           <Filter categories={categories as unknown as Category[]}/>
         </View>
       }
-      ListEmptyComponent={()=> !loading && <Text>No Result</Text>}
+      ListEmptyComponent={()=> !loading && <Empty/>}
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}
       />
-  
+     {loading && (
+            <View className="absolute inset-0 bg-white/60 justify-center items-center z-50">
+              <ActivityIndicator size="large" color="#f97316" />
+              <Text className="mt-4 text-gray-500">Loading your favorite food...</Text>
+            </View>
+          )}
     </SafeAreaView>
   );
 };

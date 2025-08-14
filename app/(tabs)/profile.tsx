@@ -11,6 +11,7 @@ import {
   Alert,
   FlatList,
   Image,
+  RefreshControl,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -224,6 +225,7 @@ const Profile = () => {
             </View>
           </>
         }
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchUserProfile} />}
       />
 
       {/* Overlay Loader */}
