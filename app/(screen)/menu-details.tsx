@@ -138,7 +138,7 @@ const MenuDetails: React.FC = () => {
     { id: '8', name: 'Pringles', image: images.onionRings, selected: false, price: 0, type: 'side' },
   ];
 
-  // Get image for customizations
+  // // Get image for customizations
   const getCustomizationImage = (name: string) => {
     const imageMap: { [key: string]: any } = {
       'tomato': images.tomatoes,
@@ -155,6 +155,14 @@ const MenuDetails: React.FC = () => {
       'pringles': images.onionRings,
       'mozzarella sticks': images.cheese,
       'iced tea': images.coleslaw,
+      'coke': images.coke,
+      'jalapeños': images.jalapenos,
+      'olives': images.olives,
+      'extra cheese': images.cheese,
+      'garlic bread': images.garlicBread,
+      'potato wedges': images.fries,
+      'chicken nuggets': images.chickenNuggets,
+      'sweet corn': images.sweetCorn,
     };
     return imageMap[name.toLowerCase()] || images.avocado;
   };
