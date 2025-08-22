@@ -107,7 +107,7 @@ const LoadingScreen = () => (
           Loading your profile...
         </Text>
         <Text className="text-gray-500 text-sm text-center mt-1">
-          This won't take long
+          This won&#39;t take long
         </Text>
       </View>
     </View>

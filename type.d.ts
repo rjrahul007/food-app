@@ -9,6 +9,8 @@ export interface MenuItem extends Models.Document {
     protein: number;
     rating: number;
     type: string;
+    categories?: Category;
+    menuCustomizations?: CartCustomization[]
 }
 
 export interface Category extends Models.Document {
