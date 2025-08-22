@@ -467,46 +467,57 @@ const MenuDetails: React.FC = () => {
         )}
 
         {/* Quantity and Add to Cart Section */}
-        <View className="px-5 pb-8">
-          <View className="flex-row items-center justify-between">
-            {/* Quantity Selector */}
-            <View className="flex-row items-center bg-gray-50 rounded-2xl px-4 py-2">
-              <TouchableOpacity 
-                onPress={decrementQuantity}
-                className="w-8 h-8 items-center justify-center"
-              >
-                <Text className="text-2xl font-bold text-orange-500">−</Text>
-              </TouchableOpacity>
-              <Text className="mx-6 text-2xl font-bold text-gray-900">
-                {quantity}
-              </Text>
-              <TouchableOpacity 
-                onPress={incrementQuantity}
-                className="w-8 h-8 items-center justify-center"
-              >
-                <Text className="text-2xl font-bold text-orange-500">+</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Add to Cart Button */}
+      <View className="px-5 pb-8" >
+        {/* Outer White Container */}
+        <View
+          className="flex-row items-center bg-white rounded-2xl px-4 py-4"
+          style={{
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.08,
+            shadowRadius: 8,
+            elevation: 3,
+          }}
+        >
+          {/* Quantity Selector */}
+          <View className="flex-row items-center bg-gray-50 rounded-xl px-3 py-2">
             <TouchableOpacity
-              className="flex-1 ml-6 bg-orange-500 py-4 px-6 rounded-full flex-row items-center justify-center"
-              style={{
-                shadowColor: '#F97316',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 8,
-                elevation: 8,
-              }}
-              onPress={handleAddToCart}
+              onPress={decrementQuantity}
+              className="w-8 h-8 items-center justify-center"
             >
-              <Ionicons name="bag-outline" size={18} color="white" />
-              <Text className="text-white font-bold text-base ml-3">
-                Add to cart (${totalPrice})
-              </Text>
+              <Text className="text-2xl font-bold text-orange-500">−</Text>
+            </TouchableOpacity>
+
+            <Text className="mx-4 text-xl font-bold text-gray-900">{quantity}</Text>
+
+            <TouchableOpacity
+              onPress={incrementQuantity}
+              className="w-8 h-8 items-center justify-center"
+            >
+              <Text className="text-2xl font-bold text-orange-500">+</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Add to Cart Button */}
+          <TouchableOpacity
+            className="flex-1 ml-4 bg-orange-500 py-3 rounded-full flex-row items-center justify-center"
+            style={{
+              shadowColor: '#F97316',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.25,
+              shadowRadius: 6,
+              elevation: 6,
+            }}
+            onPress={handleAddToCart}
+          >
+            <Ionicons name="bag-outline" size={18} color="white" />
+            <Text className="text-white font-bold text-base ml-2">
+              Add to cart (${totalPrice})
+            </Text>
+          </TouchableOpacity>
         </View>
+      </View>
+
       </ScrollView>
     </View>
   );

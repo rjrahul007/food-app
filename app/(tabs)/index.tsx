@@ -1,21 +1,43 @@
 import CartButton from "@/components/CartButton";
 import { images, offers } from "@/constants";
+import { getCategories } from "@/lib/appwrite";
 import cn from "clsx";
 import { router } from "expo-router";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import "../globals.css"; // import global styless
  
 // never wrap flatlist or virtuallistized list inside a scrollview
 
 export default function Index() {
- const handlePress = (name: string) => {
-    router.push({
+
+const [categories, setCategories] = useState<any[]>([]);
+useEffect(() => {
+  getCategories().then(setCategories);
+}, []);
+
+
+const handlePress = (name: string) => {
+  // find the category by name
+  const categoryDoc = categories.find(
+    (c) => c.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if (!categoryDoc) {
+    console.warn("No category found for", name);
+    return; // stop navigation if not found
+  }
+
+  router.push({
     pathname: "/search",
-    params: {category: name }
+    params: {
+      category: categoryDoc.$id, // always an ID now
+    },
   });
-  };
+};
+
 
   return (
 <SafeAreaView className="flex-1 bg-white">

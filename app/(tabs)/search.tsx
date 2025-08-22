@@ -18,7 +18,7 @@ const Search = () => {
    const { data, refetch, loading, setLoading } = useAppwrite({ fn: getMenu, params: { category: category ?? '', query: query ?? '', limit: 6, } });
   
   const {data: categories} = useAppwrite({fn: getCategories});
-  
+
   useEffect(() => {
    refetch({category: category ?? '', query: query ?? '', limit: 6});
 
